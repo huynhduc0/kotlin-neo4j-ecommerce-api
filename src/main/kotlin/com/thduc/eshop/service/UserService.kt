@@ -44,7 +44,9 @@ class UserService(
         user.avatar = fileUtil.store(user.username, user, userForm.avatar, UploadType.AVATAR)
         return userRepository.save(user)
     }
-
+    fun findByUsername(username:String):User{
+        return userRepository.findByUsername(username)
+    }
     fun checkLogin(u: String, pass: String?): User? {
         val user: User = userRepository.findByUsername(u) ?: return null
         return if (passwordEncoder.matches(pass, user.password)) user else null

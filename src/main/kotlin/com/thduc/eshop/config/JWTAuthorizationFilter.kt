@@ -43,7 +43,8 @@ class JWTAuthorizationFilter(
                 .build()
                 .parseClaimsJws(token.replace(securityProperty.tokenPrefix, ""))
             val authorities = ArrayList<GrantedAuthority>()
-            (claims.body["auth"].toString().split(",")).forEach { role -> authorities.add(SimpleGrantedAuthority(role.toString())) }
+            (claims.body["auth"] as List<*>).forEach { role -> authorities.add(SimpleGrantedAuthority(role.toString())) }
+
             UsernamePasswordAuthenticationToken(claims.body.subject, null, authorities)
         } catch (e: Exception) {
             return null

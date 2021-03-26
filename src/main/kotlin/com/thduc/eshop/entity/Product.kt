@@ -17,6 +17,8 @@ class Product(
     var stock: Int?,
     @Relationship(value = "HAS_MEDIA", direction = Relationship.Direction.OUTGOING)
     var medias: Set<Media>,
+    @Relationship(value = "IS_SHOP", direction = Relationship.Direction.OUTGOING)
+    var shop: Shop?=null,
     @CreatedBy val createdBy: User
 ) {
 }
