@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("shop")
-//@PreAuthorize("hasRole("+"MERCHANT"+")")
+@PreAuthorize("hasRole('MERCHANT')")
 class ShopController {
     @GetMapping("my")
     fun getMyShop():String{
