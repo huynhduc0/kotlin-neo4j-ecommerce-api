@@ -8,5 +8,8 @@ import org.springframework.data.neo4j.core.schema.Node
 class Address (
     @Id @GeneratedValue var id:Long?,
     var address: String?,
+    var lat: Float? = null,
+    var lon: Float? = null
+
 ){
 }
