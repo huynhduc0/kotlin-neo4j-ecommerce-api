@@ -17,7 +17,7 @@ class ShopService(
     }
 
     fun saveShop(user: User, shop: Shop): Shop {
-        var currentShop: Shop = if (shop.id != null)
+        val currentShop: Shop = if (shop.id != null)
             shopRepository.findById(shop.id!!).orElse(
                 throw DataNotFoundException(
                     "shop", "shop",
@@ -29,7 +29,7 @@ class ShopService(
     }
 
     fun deleteShop(user: User): SuccessActionResponse {
-        var shop: Shop = shopRepository.findTopByCreatedBy(user)
+        val shop: Shop = shopRepository.findTopByCreatedBy(user)
         shopRepository.delete(shop)
         return SuccessActionResponse("delete",true)
     }

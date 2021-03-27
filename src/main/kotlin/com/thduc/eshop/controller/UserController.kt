@@ -5,7 +5,6 @@ import com.thduc.eshop.request.UserForm
 import com.thduc.eshop.request.UserResponse
 import com.thduc.eshop.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Controller
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
@@ -22,6 +21,6 @@ class UserController(@Autowired val userService: UserService) {
     @PostMapping("login")
     @Transactional
     fun login(userForm: UserForm):UserResponse{
-        return userService.login(userForm);
+        return userService.login(userForm)
     }
 }

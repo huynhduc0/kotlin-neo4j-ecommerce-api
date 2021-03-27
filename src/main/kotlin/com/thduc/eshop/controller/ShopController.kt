@@ -1,7 +1,6 @@
 package com.thduc.eshop.controller
 
 import com.thduc.eshop.annotation.ActiveUser
-import com.thduc.eshop.constant.RoleConstant
 import com.thduc.eshop.entity.Shop
 import com.thduc.eshop.request.SuccessActionResponse
 import com.thduc.eshop.request.UserPrincipal
@@ -16,20 +15,20 @@ import org.springframework.web.bind.annotation.*
 class ShopController(
     @Autowired val shopService: ShopService
 ) {
-    @GetMapping()
+    @GetMapping
     fun getMyShop(@ActiveUser userPrincipal: UserPrincipal): Shop {
         return shopService.findShopByUser(userPrincipal.getUser())
     }
-    @PostMapping()
+    @PostMapping
     fun setSop(@RequestBody shop: Shop,@ActiveUser userPrincipal: UserPrincipal):Shop{
         return shopService.saveShop(userPrincipal.getUser()!!,shop)
     }
-    @PutMapping()
+    @PutMapping
     fun updateShop(@RequestBody shop: Shop,@ActiveUser userPrincipal: UserPrincipal):Shop{
         shop.createdBy = userPrincipal.getUser()!!
         return shopService.saveShop(userPrincipal.getUser()!!,shop)
     }
-    @DeleteMapping()
+    @DeleteMapping
     fun deleteShop(@ActiveUser userPrincipal: UserPrincipal): SuccessActionResponse{
         return shopService.deleteShop(userPrincipal.getUser()!!)
     }

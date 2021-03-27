@@ -3,7 +3,6 @@ package com.thduc.eshop.service
 import com.thduc.eshop.config.SecurityProperty
 import com.thduc.eshop.constant.UploadType
 import com.thduc.eshop.entity.User
-import com.thduc.eshop.exception.BadRequestException
 import com.thduc.eshop.exception.DataNotFoundException
 import com.thduc.eshop.repository.UserRepository
 import com.thduc.eshop.request.UserForm
@@ -13,19 +12,12 @@ import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.jsonwebtoken.security.Keys
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.PostMapping
 import java.util.*
-import java.util.stream.Collectors
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
-
-import java.util.ArrayList
-
-
 
 
 @Service
@@ -40,7 +32,7 @@ class UserService(
     @Transactional
     @PostMapping("register")
     fun createUser(userForm: UserForm): User {
-        var user: User = User(
+        val user = User(
             username = userForm.username,
             fullname = userForm.fullname,
             phoneNumber = userForm.phoneNumber
@@ -55,7 +47,7 @@ class UserService(
         return userRepository.findByUsername(username)
     }
     fun checkLogin(u: String, pass: String?): User? {
-        val user: User = userRepository.findByUsername(u) ?: return null
+        val user: User = userRepository.findByUsername(u)
         return if (passwordEncoder.matches(pass, user.password)) user else null
     }
 
