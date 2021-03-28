@@ -1,4 +1,4 @@
-package com.thduc.eshop.controller
+package com.thduc.eshop.controller.admin
 
 import com.thduc.eshop.entity.Category
 import com.thduc.eshop.request.SuccessActionResponse

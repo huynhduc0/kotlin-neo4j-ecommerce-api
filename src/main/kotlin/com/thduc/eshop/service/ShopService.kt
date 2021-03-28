@@ -5,6 +5,7 @@ import com.thduc.eshop.entity.User
 import com.thduc.eshop.exception.DataNotFoundException
 import com.thduc.eshop.repository.ShopRepository
 import com.thduc.eshop.request.SuccessActionResponse
+import com.thduc.eshop.service.ServiceImpl.ShopServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 

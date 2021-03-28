@@ -1,4 +1,4 @@
-package com.thduc.eshop.controller
+package com.thduc.eshop.controller.merchant
 
 import com.thduc.eshop.annotation.ActiveUser
 import com.thduc.eshop.entity.Shop

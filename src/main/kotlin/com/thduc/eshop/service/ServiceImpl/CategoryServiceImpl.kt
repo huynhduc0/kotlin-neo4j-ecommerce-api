@@ -1,4 +1,4 @@
-package com.thduc.eshop.service
+package com.thduc.eshop.service.ServiceImpl
 
 import com.thduc.eshop.entity.Category
 import com.thduc.eshop.request.SuccessActionResponse

@@ -1,11 +1,10 @@
 package com.thduc.eshop.entity
 
-import com.thduc.eshop.constant.Status
+import com.thduc.eshop.constant.StatusType
 import org.neo4j.ogm.annotation.NodeEntity
 import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.neo4j.core.schema.GeneratedValue
 import org.springframework.data.neo4j.core.schema.Id
-import org.springframework.data.neo4j.core.schema.Node
 import org.springframework.data.neo4j.core.schema.Relationship
 
 @NodeEntity
@@ -21,7 +20,7 @@ class Product(
     var medias: Set<Media>,
     @Relationship(value = "IS_SHOP", direction = Relationship.Direction.OUTGOING)
     var shop: Shop?=null,
-    var status: Status? = Status.ACTIVATE,
+    var status: StatusType? = StatusType.ACTIVATE,
     @CreatedBy val createdBy: User
 ) {
 }

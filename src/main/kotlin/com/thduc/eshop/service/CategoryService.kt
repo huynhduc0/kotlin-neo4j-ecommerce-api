@@ -4,6 +4,7 @@ import com.thduc.eshop.entity.Category
 import com.thduc.eshop.exception.DataNotFoundException
 import com.thduc.eshop.repository.CategoryRepository
 import com.thduc.eshop.request.SuccessActionResponse
+import com.thduc.eshop.service.ServiceImpl.CategoryServiceImpl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Service
 @Service
 class CategoryService(
     @Autowired val categoryRepository: CategoryRepository
-):CategoryServiceImpl {
+): CategoryServiceImpl {
     fun getAll(pageable: Pageable): Page<Category> {
         return categoryRepository.findAll(pageable)
     }

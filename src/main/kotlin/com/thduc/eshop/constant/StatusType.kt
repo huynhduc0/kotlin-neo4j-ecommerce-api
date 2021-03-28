@@ -1,5 +1,5 @@
 package com.thduc.eshop.constant
 
-enum class Status {
+enum class StatusType {
     ACTIVATE,DEACTIVATE,PENDING,NEW
 }
