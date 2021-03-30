@@ -14,23 +14,22 @@ class ShopService(
     @Autowired val shopRepository: ShopRepository
 ) : ShopServiceImpl {
     fun findShopByUser(user: User?): Shop {
-        return shopRepository.findTopByCreatedBy(user!!)
+        return shopRepository.findTopByUser(user!!)
+    }
+    fun findShopById(id:String): Shop? {
+        return shopRepository.findById(id).orElseThrow { DataNotFoundException("shop","id",id.toString()) }
     }
 
     fun saveShop(user: User, shop: Shop): Shop {
-        val currentShop: Shop = if (shop.id != null)
-            shopRepository.findById(shop.id!!).orElse(
-                throw DataNotFoundException(
-                    "shop", "shop",
-                    shop.id.toString()
-                )
-            ) else shop
-        currentShop.createdBy = user
+        val currentShop: Shop = if (shop.name != null)
+            shop else shop
+        currentShop.mainAddress!!.user = user
+        currentShop.user = user
         return shopRepository.save(currentShop)
     }
 
     fun deleteShop(user: User): SuccessActionResponse {
-        val shop: Shop = shopRepository.findTopByCreatedBy(user)
+        val shop: Shop = shopRepository.findTopByUser(user)
         shopRepository.delete(shop)
         return SuccessActionResponse("delete",true)
     }

@@ -1,26 +1,27 @@
 package com.thduc.eshop.entity
 
 import com.thduc.eshop.constant.StatusType
-import org.neo4j.ogm.annotation.NodeEntity
-import org.springframework.data.annotation.CreatedBy
-import org.springframework.data.neo4j.core.schema.GeneratedValue
-import org.springframework.data.neo4j.core.schema.Id
-import org.springframework.data.neo4j.core.schema.Relationship
 
-@NodeEntity
-class Product(
-    @Id @GeneratedValue var Id:Long?,
-    var name:String?,
-    var shortDescription: String?,
-    var description: String,
-    @Relationship(value = "IS_CATEGORIES",direction = Relationship.Direction.INCOMING)
-    var categories: Set<Category>,
-    var stock: Int?,
-    @Relationship(value = "HAS_MEDIA", direction = Relationship.Direction.OUTGOING)
-    var medias: Set<Media>,
-    @Relationship(value = "IS_SHOP", direction = Relationship.Direction.OUTGOING)
+import javax.persistence.*
+
+
+@Entity
+data class Product(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var Id:Long? = null,
+    var name:String? = "",
+    var shortDescription: String? = "",
+    var description: String? = "",
+    @ManyToMany
+    var categories: Set<Category>? = null,
+    var stock: Int? = 0,
+    @ManyToMany
+    var medias: Set<Media>? = null,
+    @OneToOne
     var shop: Shop?=null,
     var status: StatusType? = StatusType.ACTIVATE,
-    @CreatedBy val createdBy: User
+    @OneToOne var user: User ?= null,
+    @OneToMany(cascade = [CascadeType.ALL],fetch = FetchType.EAGER)
+    var productProperties: Set<ProductProperty>? = null
 ) {
+    constructor(): this(null,null,null,null,null,null,null,null,null,null,null)
 }

@@ -1,25 +1,22 @@
 package com.thduc.eshop.entity
 
 import com.thduc.eshop.constant.NotificationType
-import org.neo4j.ogm.annotation.NodeEntity
-import org.springframework.data.annotation.CreatedBy
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.neo4j.core.schema.GeneratedValue
-import org.springframework.data.neo4j.core.schema.Id
 import java.util.*
-@NodeEntity
-class Notification(
-    @Id @GeneratedValue
+import javax.persistence.*
+
+@Entity
+data class Notification(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
-    var title: String,
-    var content:String,
-    var device: Device,
-    @CreatedDate
-    var created: Date = Date(),
+    var title: String?,
+    var content:String?,
+    @OneToOne
+    var device: Device?,
     var seenDate: Date?=null,
     var seen: Boolean = false,
-    var notificationType: NotificationType,
+    var notificationType: NotificationType?,
 //    var fromUser: User,
-    @CreatedBy var toUser: User,
+    @OneToOne var toUser: User?,
 ) {
+    constructor(): this(null,null,null,null,null,false,null,null)
 }

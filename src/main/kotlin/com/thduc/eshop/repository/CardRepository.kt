@@ -1,7 +1,9 @@
 package com.thduc.eshop.repository
 
 import com.thduc.eshop.entity.Card
-import org.springframework.data.neo4j.repository.Neo4jRepository
+import org.springframework.data.repository.PagingAndSortingRepository
+import org.springframework.stereotype.Repository
 
-interface CardRepository:Neo4jRepository<Card,Long> {
+@Repository
+interface CardRepository: PagingAndSortingRepository<Card, Long> {
 }

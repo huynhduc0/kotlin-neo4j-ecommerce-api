@@ -1,18 +1,18 @@
 package com.thduc.eshop.entity
 
 import com.thduc.eshop.constant.StatusType
-import org.neo4j.ogm.annotation.NodeEntity
-import org.springframework.data.neo4j.core.schema.GeneratedValue
-import org.springframework.data.neo4j.core.schema.Id
+import javax.persistence.*
 
-@NodeEntity
+
+@Entity
 class Media(
-    @Id @GeneratedValue var id: Long? = null,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long? = null,
     val mediaPath: String? = null,
     val mediaType: String? = null,
-    val authorId: Long? = null,
-    var status: StatusType?= StatusType.ACTIVATE
-//    @CreatedBy val createdBy: User
+    var status: StatusType?= StatusType.ACTIVATE,
+    @OneToOne
+    val createdBy: User? = null
 ) {
+    constructor(): this(null,null,null)
 
 }

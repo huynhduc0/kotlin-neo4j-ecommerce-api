@@ -1,7 +1,10 @@
 package com.thduc.eshop.controller.admin
 
+import com.thduc.eshop.annotation.ActiveUser
 import com.thduc.eshop.entity.Category
+import com.thduc.eshop.request.CategoryForm
 import com.thduc.eshop.request.SuccessActionResponse
+import com.thduc.eshop.request.UserPrincipal
 import com.thduc.eshop.service.CategoryService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
@@ -34,8 +37,8 @@ class CategoryController(
     }
 
     @PostMapping
-    fun addCategory(@RequestBody category: Category): Category {
-        return categoryService.addCategory(category)
+    fun addCategory(category: CategoryForm,@ActiveUser userPrincipal: UserPrincipal): Category {
+        return categoryService.addCategory(userPrincipal.getUser()!!,category)
     }
 
     @DeleteMapping

@@ -1,16 +1,12 @@
 package com.thduc.eshop.entity
 
 import com.thduc.eshop.constant.StatusType
-import org.neo4j.ogm.annotation.NodeEntity
-import org.springframework.data.annotation.CreatedBy
-import org.springframework.data.neo4j.core.schema.GeneratedValue
-import org.springframework.data.neo4j.core.schema.Id
+import javax.persistence.*
 
-@NodeEntity
-class Address (
-    @Id @GeneratedValue var id:Long?,
+@Entity
+data class Address (
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id:Long?,
     var address: String?,
-
     var lat: Float? = null,
     var lon: Float? = null,
     var status: StatusType? = StatusType.ACTIVATE,
@@ -20,6 +16,9 @@ class Address (
     var city:String? = null,
     var firstName: String?=null,
     var lastName:String? =null,
-    @CreatedBy var user: User
+    @OneToOne
+    var user: User? = null,
+//    var userId: Long? = null
 ){
+    constructor(): this(null,null,null)
 }

@@ -53,7 +53,7 @@ class JWTAuthorizationFilter(
             val username:String? = claims.body.subject
             val user:com.thduc.eshop.entity.User = userService.findByUsername(username!!)
             val author: MutableList<SimpleGrantedAuthority> = java.util.ArrayList()
-            user.roles!!.forEach { role -> author.add(SimpleGrantedAuthority("ROLE_"+role.roleName.toString())) }
+            user.roles!!.forEach { role -> author.add(SimpleGrantedAuthority("ROLE_"+role.roleName)) }
              return if (user.username != null) {
                  val userDetail: UserDetails = UserPrincipal.build(user)
                  UsernamePasswordAuthenticationToken(

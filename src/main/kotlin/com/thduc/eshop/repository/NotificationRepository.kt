@@ -1,7 +1,8 @@
 package com.thduc.eshop.repository
 
 import com.thduc.eshop.entity.Notification
-import org.springframework.data.neo4j.repository.Neo4jRepository
+import org.springframework.data.repository.PagingAndSortingRepository
 
-interface NotificationRepository: Neo4jRepository<Notification,Long>{
+
+interface NotificationRepository: PagingAndSortingRepository<Notification, Long> {
 }

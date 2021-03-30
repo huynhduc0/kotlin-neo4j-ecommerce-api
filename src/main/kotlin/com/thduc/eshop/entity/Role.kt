@@ -1,16 +1,15 @@
 package com.thduc.eshop.entity
 
-import org.hibernate.validator.constraints.UniqueElements
-import org.neo4j.ogm.annotation.NodeEntity
-import org.springframework.data.neo4j.core.schema.GeneratedValue
-import org.springframework.data.neo4j.core.schema.Id
-import org.springframework.data.neo4j.core.schema.Node
+import javax.persistence.Entity
+import javax.persistence.GeneratedValue
+import javax.persistence.GenerationType
+import javax.persistence.Id
 
-@NodeEntity
+@Entity
 class Role(
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
-//    @UniqueElements
     var roleName: String? = null
 ) {
+    constructor(): this(null,null)
 }

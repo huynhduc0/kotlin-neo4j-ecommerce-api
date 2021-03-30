@@ -1,18 +1,16 @@
 package com.thduc.eshop.entity
 
-import org.neo4j.ogm.annotation.NodeEntity
-import org.springframework.data.annotation.CreatedBy
-import org.springframework.data.neo4j.core.schema.GeneratedValue
-import org.springframework.data.neo4j.core.schema.Id
-import org.springframework.data.neo4j.core.schema.Relationship
+import javax.persistence.*
 
-@NodeEntity
-class Rating(
-    @Id @GeneratedValue
-    var id: Long?=null,
-    var star: Int,
-    @Relationship(value = "FROM_PRODUCT",direction = Relationship.Direction.INCOMING)
-    var product: Product,
-    @CreatedBy var user: User,
+
+@Entity
+data class Rating(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long?=null,
+    var star: Int?= -1,
+    @OneToOne
+    var product: Product? = null,
+   @OneToOne
+   var user:User? = null
 ) {
+    constructor(): this(null,null,null)
 }

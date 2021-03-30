@@ -1,20 +1,17 @@
 package com.thduc.eshop.entity
 
 import com.thduc.eshop.constant.OSType
-import org.neo4j.ogm.annotation.NodeEntity
-import org.springframework.data.annotation.CreatedBy
-import org.springframework.data.neo4j.core.schema.GeneratedValue
-import org.springframework.data.neo4j.core.schema.Id
+import javax.persistence.*
 
-@NodeEntity
-class Device(
-    @Id @GeneratedValue
+@Entity
+data class Device(
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
-    var deviceId: String,
+    var deviceId: String? = null,
     var jwtToken:String? =null,
     var push_token:String? = null,
-    var os: OSType,
-    @CreatedBy var user: User? = null,
+    var os: OSType = OSType.WEB,
+    @OneToOne var user: User? = null,
 ) {
-
+    constructor(): this(null,null,null)
 }

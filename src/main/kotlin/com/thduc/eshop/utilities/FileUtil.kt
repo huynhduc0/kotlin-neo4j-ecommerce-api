@@ -33,7 +33,7 @@ class FileUtil {
         var fileName: String = "$folderPath/$newFileName"
         val destinationPaths = Paths.get(fileName)
         file!!.transferTo(destinationPaths)
-        return Media(mediaPath = "$relativePath/$newFileName", mediaType = extension, authorId = user.id)
+        return Media(mediaPath = "$relativePath/$newFileName", mediaType = extension,createdBy=user)
     }
 
     fun loadFile(filename: String): Resource {

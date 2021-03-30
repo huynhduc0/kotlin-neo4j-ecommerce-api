@@ -12,11 +12,11 @@ import java.util.stream.Collectors
 class UserPrincipal : UserDetails {
     var id: Long = 0
     var name: String? = null
+    var currentUser:User? = null
     private var username: String? = null
-
     @JsonIgnore
     private var password: String? = null
-    private var user: User? = null
+
     var grantedAuthorities: List<GrantedAuthority> = ArrayList()
 
     constructor() {}
@@ -32,16 +32,16 @@ class UserPrincipal : UserDetails {
         this.name = name
         this.username = username
         this.password = password
-        this.user = user
+        this.currentUser = user
         this.grantedAuthorities = grantedAuthorities
     }
 
     fun getUser(): User? {
-        return user
+        return this.currentUser
     }
 
     fun setUser(user: User?) {
-        this.user = user
+        this.currentUser = user
     }
 
     override fun getUsername(): String {

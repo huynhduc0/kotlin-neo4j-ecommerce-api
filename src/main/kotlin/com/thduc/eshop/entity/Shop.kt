@@ -1,27 +1,22 @@
 package com.thduc.eshop.entity
 
 import com.thduc.eshop.constant.StatusType
-import org.neo4j.ogm.annotation.NodeEntity
 import org.springframework.data.annotation.CreatedBy
-import org.springframework.data.annotation.CreatedDate
-import org.springframework.data.annotation.LastModifiedDate
-import org.springframework.data.neo4j.core.schema.GeneratedValue
-import org.springframework.data.neo4j.core.schema.Id
-import org.springframework.data.neo4j.core.schema.Relationship
-import java.util.*
+import javax.persistence.*
 
-@NodeEntity
+@Entity
 class Shop(
-    @Id @GeneratedValue var id: Long? = null,
-    @Relationship("HAS_ADDRESS", direction = Relationship.Direction.OUTGOING)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long? = null,
+    var name:String? = null,
+    @OneToOne(cascade = [CascadeType.PERSIST],fetch = FetchType.EAGER)
     var mainAddress: Address? = null,
-    @CreatedBy var createdBy: User,
-    @CreatedDate var created: Date? = Date(),
-    @LastModifiedDate var updated: Date = Date(),
+    @OneToOne
+    var user: User? = null,
     var status: StatusType?= StatusType.ACTIVATE,
-    @Relationship("HAS_CARD", direction = Relationship.Direction.OUTGOING)
+    @OneToOne
     var card: Card? = null
 
 ) {
+    constructor(): this(null,null,null,null,null,null)
 
 }

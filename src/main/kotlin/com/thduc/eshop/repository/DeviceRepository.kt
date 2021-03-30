@@ -1,7 +1,8 @@
 package com.thduc.eshop.repository
 
 import com.thduc.eshop.entity.Device
-import org.springframework.data.neo4j.repository.Neo4jRepository
+import org.springframework.data.repository.PagingAndSortingRepository
 
-interface DeviceRepository:Neo4jRepository<Device,Long> {
+
+interface DeviceRepository: PagingAndSortingRepository<Device, Long> {
 }

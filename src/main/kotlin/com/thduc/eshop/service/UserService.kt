@@ -41,7 +41,7 @@ class UserService(
 //        user = userRepository.save(user)
         user.roles = if (userForm.isShop) setOf(roleService.findRoleByRoleName("MERCHANT")) else
             setOf(roleService.findRoleByRoleName("USER"))
-        user.avatar = fileUtil.store(user.username, user, userForm.avatar, UploadType.AVATAR)
+        user.avatar = fileUtil.store(user.username!!, user, userForm.avatar, UploadType.AVATAR).mediaPath
         return userRepository.save(user)
     }
     fun findByUsername(username:String):User{
