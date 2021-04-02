@@ -2,6 +2,8 @@ package com.thduc.eshop.config
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.thduc.eshop.exception.BadRequestException
+import com.thduc.eshop.exception.UnauthorizedEntryPoint
 import com.thduc.eshop.service.UserService
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -66,10 +68,10 @@ class JWTAuthenticationFilter(
         val calendar = Calendar.getInstance()
         calendar.add(Calendar.DAY_OF_YEAR,  securityProperty.expirationTime)
         val username: String? = (auth.principal as User).username
-        val user: com.thduc.eshop.entity.User = userService.findByUsername(username!!)
+        val user: com.thduc.eshop.entity.User? = userService.findByUsername(username!!) ?: throw BadRequestException("user not found")
 
         val authorities: MutableList<SimpleGrantedAuthority> = ArrayList()
-        user.roles!!.forEach { role -> authorities.add(SimpleGrantedAuthority(role.roleName)) }
+        user!!.roles!!.forEach { role -> authorities.add(SimpleGrantedAuthority(role.roleName)) }
         val authString:String? = authorities
             .map { obj: GrantedAuthority -> obj.authority }
             .toString()

@@ -43,22 +43,30 @@ class ProductService(
             )
         )
     }
-    override fun edit(id:Long,productForm: ProductForm, user: User): Product {
-        var oldProduct = productRepository.findById(id).orElseThrow { throw DataNotFoundException("product","id",id.toString()) }
-        oldProduct.productProperties = if (productForm.properties!=null) productForm.properties else oldProduct.productProperties
-        oldProduct.status = if(productForm.status != null) productForm.status else oldProduct.status
-        oldProduct.medias = if(productForm.medias !=null) productForm.medias else oldProduct.medias
-        oldProduct.name = if(productForm.name.isNullOrBlank()) productForm.name else oldProduct.name
-        oldProduct.categories = if(productForm.categories != null) productForm.categories else oldProduct.categories
+
+    override fun edit(id: Long, productForm: ProductForm, user: User): Product {
+        var oldProduct =
+            productRepository.findById(id).orElseThrow { throw DataNotFoundException("product", "id", id.toString()) }
+        oldProduct.productProperties =
+            if (productForm.properties != null) productForm.properties else oldProduct.productProperties
+        oldProduct.status = if (productForm.status != null) productForm.status else oldProduct.status
+        oldProduct.medias = if (productForm.medias != null) productForm.medias else oldProduct.medias
+        oldProduct.name = if (productForm.name.isNullOrBlank()) productForm.name else oldProduct.name
+        oldProduct.categories = if (productForm.categories != null) productForm.categories else oldProduct.categories
         oldProduct.user = user
-        oldProduct.description = productForm.description
+        oldProduct.description =
+            if (productForm.description != null) productForm.description else productForm.description
         oldProduct.shop = oldProduct.shop
-        oldProduct.shortDescription = productForm.shortDescription
-        oldProduct.stock = productForm.stock
+        oldProduct.shortDescription =
+            if (productForm.shortDescription != null) productForm.shortDescription else productForm.shortDescription
+        oldProduct.stock = if (productForm.stock != null) productForm.stock else oldProduct.stock
         return productRepository.save(
-           oldProduct
+            oldProduct
         )
     }
-
-
+    override fun deleteProduct(id: Long){
+        var oldProduct =
+            productRepository.findById(id).orElseThrow { throw DataNotFoundException("product", "id", id.toString()) }
+        productRepository.delete(oldProduct)
+    }
 }

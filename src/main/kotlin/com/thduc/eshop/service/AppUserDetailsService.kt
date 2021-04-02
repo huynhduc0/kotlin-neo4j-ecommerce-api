@@ -17,7 +17,7 @@ class AppUserDetailsService(private val userRepository: UserRepository) : UserDe
     override fun loadUserByUsername(s: String): UserDetails {
         val user = userRepository.findByUsername(s)
         val authorities = ArrayList<GrantedAuthority>()
-        user.roles!!.forEach { authorities.add(SimpleGrantedAuthority("ROLE_"+it.roleName)) }
+        user!!.roles!!.forEach { authorities.add(SimpleGrantedAuthority("ROLE_"+it.roleName)) }
         return User(
             user.username,
 //            user.password,

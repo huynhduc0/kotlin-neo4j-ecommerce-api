@@ -9,8 +9,9 @@ import javax.persistence.Id
 @Entity
 data class ProductOption(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id:Long? = null,
-    var name: String,
-    var value: String
+    var name: String?,
+    var value: String?,
+    var subQuantity: Int? = null,
 ) {
-    constructor(): this(name="noname",value = "nothing")
+    constructor(): this(name="noname",value = "nothing", subQuantity = null)
 }

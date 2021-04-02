@@ -29,7 +29,7 @@ class ProductController(
     ): Page<Product>{
         return if (sortOrder == "desc")
             productService.loadProductByUser(userPrincipal.currentUser!!, PageRequest.of(page, size, Sort.by(sortBy).descending()))
-        else productService.loadProductByUser(userPrincipal.getUser()!!,PageRequest.of(page, size, Sort.by(sortBy).descending()))
+        else productService.loadProductByUser(userPrincipal.getUser()!!,PageRequest.of(page, size, Sort.by(sortBy)))
      }
     @PostMapping
     fun addProduct(@RequestBody productForm: ProductForm,@ActiveUser userPrincipal: UserPrincipal): Product{

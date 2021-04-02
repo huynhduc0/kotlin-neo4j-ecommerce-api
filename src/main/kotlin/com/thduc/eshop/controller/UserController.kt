@@ -23,4 +23,9 @@ class UserController(@Autowired val userService: UserService) {
     fun login(userForm: UserForm):UserResponse{
         return userService.login(userForm)
     }
+    @PostMapping("google")
+    @Transactional
+    fun googleLogin(userForm: UserForm):UserResponse?{
+        return userService.googleLogin(userForm)
+    }
 }

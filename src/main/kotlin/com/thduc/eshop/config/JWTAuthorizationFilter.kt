@@ -5,10 +5,10 @@ import com.thduc.eshop.service.UserService
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.io.IOException
 import io.jsonwebtoken.security.Keys
+import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
@@ -24,6 +24,7 @@ class JWTAuthorizationFilter(
     authManager: AuthenticationManager,
     private val securityProperty: SecurityProperty,
     @Autowired val userService: UserService,
+    val logger: org.slf4j.Logger = LoggerFactory.getLogger(JWTAuthorizationFilter::class.java)
 ) : BasicAuthenticationFilter(authManager) {
 
     @Throws(IOException::class, ServletException::class)
@@ -46,14 +47,15 @@ class JWTAuthorizationFilter(
 
     private fun getAuthentication(token: String): UsernamePasswordAuthenticationToken? {
          try {
+             logger.info(token.replace(securityProperty.tokenPrefix, ""))
              val claims = Jwts.parserBuilder()
                  .setSigningKey(Keys.hmacShaKeyFor(securityProperty.secret.toByteArray()))
                  .build()
                  .parseClaimsJws(token.replace(securityProperty.tokenPrefix, ""))
             val username:String? = claims.body.subject
-            val user:com.thduc.eshop.entity.User = userService.findByUsername(username!!)
+            val user:com.thduc.eshop.entity.User? = userService.findByUsername(username!!)
             val author: MutableList<SimpleGrantedAuthority> = java.util.ArrayList()
-            user.roles!!.forEach { role -> author.add(SimpleGrantedAuthority("ROLE_"+role.roleName)) }
+            user!!.roles!!.forEach { role -> author.add(SimpleGrantedAuthority("ROLE_"+role.roleName)) }
              return if (user.username != null) {
                  val userDetail: UserDetails = UserPrincipal.build(user)
                  UsernamePasswordAuthenticationToken(

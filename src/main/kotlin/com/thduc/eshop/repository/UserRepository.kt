@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface UserRepository: PagingAndSortingRepository<User, Long> {
-    fun findByUsername(username:String): User
+    fun findByUsername(username:String): User?
+    fun findTopBySocialId(socialId:String): User?
 }

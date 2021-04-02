@@ -7,7 +7,7 @@ import javax.persistence.*
 
 @Entity
 data class Product(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var Id:Long? = null,
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id:Long? = null,
     var name:String? = "",
     var shortDescription: String? = "",
     var description: String? = "",
@@ -21,7 +21,7 @@ data class Product(
     var status: StatusType? = StatusType.ACTIVATE,
     @OneToOne var user: User ?= null,
     @OneToMany(cascade = [CascadeType.ALL],fetch = FetchType.EAGER)
-    var productProperties: Set<ProductProperty>? = null
+    var productProperties: Set<ProductProperty>? = null,
 ) {
     constructor(): this(null,null,null,null,null,null,null,null,null,null,null)
 }

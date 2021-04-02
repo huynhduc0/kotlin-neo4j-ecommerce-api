@@ -1,5 +1,7 @@
 package com.thduc.eshop.config
 
+import com.thduc.eshop.exception.PermissionDenyEntryPoint
+import com.thduc.eshop.exception.UnauthorizedEntryPoint
 import com.thduc.eshop.service.AppUserDetailsService
 import com.thduc.eshop.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -36,10 +38,12 @@ class WebSecurityConfig(
 //            .antMatchers("/error/**").permitAll()
             .antMatchers(HttpMethod.POST, "/users/register").permitAll()
             .antMatchers(HttpMethod.POST, "/users/login").permitAll()
+            .antMatchers(HttpMethod.POST, "/users/google").permitAll()
             .anyRequest().authenticated()
             .and()
             .addFilter(JWTAuthorizationFilter(authenticationManager(), securityProperty,userService))
             .addFilter(JWTAuthenticationFilter(authenticationManager(), securityProperty,userService))
+            .exceptionHandling().accessDeniedHandler(PermissionDenyEntryPoint()).authenticationEntryPoint(UnauthorizedEntryPoint())
 //            .addFilterBefore(JWTAuthenticationFilter(authenticationManager(), securityProperty,userService),UsernamePasswordAuthenticationFilter::class.java)
     }
     @Throws(Exception::class)
