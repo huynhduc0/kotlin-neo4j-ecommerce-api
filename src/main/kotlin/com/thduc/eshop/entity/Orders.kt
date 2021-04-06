@@ -9,7 +9,7 @@ class Orders(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long?,
     @OneToOne var user: User?,
-   @OneToMany
+   @OneToMany(cascade = [CascadeType.ALL],fetch = FetchType.EAGER)
     var orderDetails: Set<OrderDetail>?,
     var fee: Double? = 0.0,
     var total: Double?= 0.0,

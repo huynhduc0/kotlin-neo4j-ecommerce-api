@@ -1,0 +1,68 @@
+package com.thduc.eshop.service
+
+import com.thduc.eshop.config.JWTAuthorizationFilter
+import com.thduc.eshop.entity.*
+import com.thduc.eshop.exception.BadRequestException
+import com.thduc.eshop.exception.DataNotFoundException
+import com.thduc.eshop.repository.OrderRepository
+import com.thduc.eshop.repository.ProductOptionRepository
+import com.thduc.eshop.repository.ProductRepository
+import com.thduc.eshop.request.OrderForm
+import com.thduc.eshop.service.ServiceImpl.OrderServiceImpl
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Service
+
+@Service
+class OrderService(
+    @Autowired val orderRepository: OrderRepository,
+    @Autowired val productRepository: ProductRepository,
+    @Autowired val productOptionRepository: ProductOptionRepository,
+    val logger: org.slf4j.Logger = LoggerFactory.getLogger(OrderService::class.java)
+) : OrderServiceImpl {
+    fun createOrder(user: User, orderForm: OrderForm): Orders {
+        orderForm.orderDetails!!.forEach {
+            logger.info(it.toString())
+            it.product!!.shop = productRepository.findById(it.product!!.id!!)
+                .orElseThrow { DataNotFoundException("prod", "prod", it.product.id.toString()) }.shop
+        }
+        var orders = Orders(
+            null, user, orderForm.orderDetails, orderForm.fee, orderForm.total, orderForm.shippingAddress,
+            orderForm.orderDetails!!.first().product!!.shop
+        )
+        orders.orderDetails!!.forEach { orderDetail ->
+            val productOption = productOptionRepository.findById(orderDetail!!.productOption!!.id!!).orElseThrow { BadRequestException("This product option is no logger support") }
+            subProduct(orderDetail.product!!,orderDetail.productProperty,productOption,orderDetail.quantity!!)
+        }
+        return orderRepository.save(orders)
+    }
+
+    fun subProduct(
+        product: Product,
+        productProperty: ProductProperty?,
+        productOption: ProductOption?,
+        quantity: Int
+    ): Boolean {
+        if (productOption == null && product.stock!! < quantity) {
+            throw BadRequestException("Out of stock")
+            return false
+        } else if (productOption == null) {
+            product.stock!!.minus(quantity)
+            productRepository.save(product)
+        }
+        if (productOption!!.id == productOption!!.id && productProperty!!.id == productProperty!!.id && productOption.subQuantity!! >= quantity) {
+            var productOption1 = productOption.id?.let {
+                productOptionRepository.findById(it)
+                    .orElseThrow { DataNotFoundException("option", "name", productOption.name) }
+            }
+            productOption1!!.subQuantity = productOption1!!.subQuantity?.minus(quantity)
+            productOptionRepository.save(productOption1)
+        } else {
+            throw BadRequestException("Out of stock")
+            return false
+        }
+        return true
+    }
+}
