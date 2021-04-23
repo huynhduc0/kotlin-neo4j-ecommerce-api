@@ -73,6 +73,7 @@ class CartService(
         cart.productProperty = productProperty
         cart.productOption =
             productProperty.options!!.first { productOption -> productOption.id == cartForm.productOption!!.id }
+        cart.quantity = cartForm!!.quantity
         return cartRepository.save(cart)
     }
 
