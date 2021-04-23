@@ -19,6 +19,7 @@ class CartService(
     @Autowired val productRepository: ProductRepository,
     @Autowired val productOptionRepository: ProductOptionRepository,
 ) : CartServiceImpl {
+
     override fun getAllByUser(currentUser: User, of: Pageable): Page<Cart> {
         return cartRepository.findCartsByUser(currentUser, of)
     }
@@ -29,7 +30,8 @@ class CartService(
             .orElseThrow { DataNotFoundException("Product", "id", cartForm.product!!.id.toString()) }
         if (cartForm.productOption == null && product.stock!! < cartForm.quantity)
             throw BadRequestException("Out of stock")
-        var cart: Cart? = cartRepository.findTopByProductAndUser(product, currentUser)
+        var cart: Cart? = if(cartForm.productOption!=null) cartRepository.findTopByProductAndUserAndProductProperty_IdAndProductOption_Id(product,currentUser,cartForm.productProperty!!.id!!,cartForm.productOption!!.id!!)
+        else cartRepository.findTopByProductAndUser(product, currentUser)
         val flag: Boolean = cart == null
         cart = cart ?: Cart(
             product = product,

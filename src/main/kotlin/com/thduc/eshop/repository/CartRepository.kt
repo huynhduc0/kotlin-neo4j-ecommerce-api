@@ -12,4 +12,5 @@ import org.springframework.stereotype.Repository
 interface CartRepository:PagingAndSortingRepository<Cart,Long> {
     fun findCartsByUser(user: User,pageable: Pageable): Page<Cart>
     fun findTopByProductAndUser(product: Product,user: User): Cart?
+    fun findTopByProductAndUserAndProductProperty_IdAndProductOption_Id(product: Product,user: User,propId:Long,optionId: Long): Cart?
 }
