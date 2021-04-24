@@ -12,6 +12,7 @@ class Card(
     var cardNumber: String? = null,
     var validThrough: Date? = null,
     @OneToOne var user: User?= null,
+    var defaultCard: Boolean? = false,
 ) {
     constructor(): this(null,null,null)
 }
