@@ -35,7 +35,9 @@ class WebSecurityConfig(
             .and()
             .authorizeRequests()
 //            .antMatchers("/api/**").permitAll()
+
 //            .antMatchers("/error/**").permitAll()
+            .antMatchers("/actuator/**").permitAll()
             .antMatchers(HttpMethod.POST, "/users/register").permitAll()
             .antMatchers(HttpMethod.POST, "/users/login").permitAll()
             .antMatchers(HttpMethod.POST, "/users/google").permitAll()

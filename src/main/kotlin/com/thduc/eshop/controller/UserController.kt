@@ -1,5 +1,6 @@
 package com.thduc.eshop.controller
 
+import com.thduc.eshop.annotation.LogExecution
 import com.thduc.eshop.entity.User
 import com.thduc.eshop.request.UserForm
 import com.thduc.eshop.request.UserResponse
@@ -18,8 +19,10 @@ class UserController(@Autowired val userService: UserService) {
     fun register(userForm: UserForm):User{
         return userService.createUser(userForm)
     }
+
     @PostMapping("login")
     @Transactional
+
     fun login(userForm: UserForm):UserResponse{
         return userService.login(userForm)
     }

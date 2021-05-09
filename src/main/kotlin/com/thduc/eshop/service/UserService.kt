@@ -4,6 +4,7 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier
 import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.gson.GsonFactory
+import com.thduc.eshop.annotation.LogExecution
 import com.thduc.eshop.config.SecurityProperty
 import com.thduc.eshop.constant.OSType
 import com.thduc.eshop.constant.UploadType
@@ -61,6 +62,7 @@ class UserService(
     }
 
     @Throws(DataNotFoundException::class)
+    @LogExecution
     fun login(userForm: UserForm): UserResponse {
         val user: User = userRepository.findByUsername(username = userForm.username!!)
             ?: throw BadRequestException("Wrong username or password")
