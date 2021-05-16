@@ -12,4 +12,5 @@ interface ProductServiceImpl {
     fun edit(id: Long, productForm: ProductForm, user: User): Product
     fun deleteProduct(id: Long)
     fun loadUserProduct(user: User, pageable: Pageable): Page<Product>
+    fun loadRecomendProduct(user: User, pageable: Pageable): Page<Product>
 }

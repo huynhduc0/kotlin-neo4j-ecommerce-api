@@ -1,8 +1,6 @@
 package com.thduc.eshop.service
 
 import com.thduc.eshop.constant.StatusType
-import com.thduc.eshop.constant.UploadType
-import com.thduc.eshop.entity.Media
 import com.thduc.eshop.entity.Product
 import com.thduc.eshop.entity.Shop
 import com.thduc.eshop.entity.User
@@ -26,8 +24,21 @@ class ProductService(
     override fun loadProductByUser(user: User, pageable: Pageable): Page<Product> {
         return productRepository.findAll(pageable)
     }
+    override fun loadRecomendProduct(user: User, pageable: Pageable): Page<Product> {
+        return productRepository.findAllRecommendByStatus(user.id!!,pageable)
+    }
     override fun loadUserProduct(user: User,pageable: Pageable): Page<Product> {
         return productRepository.findAllByStatus(StatusType.ACTIVATE,pageable)
+    }
+    fun loadRelativeProduct(id:Long,currentUser: User, of: Pageable):Page<Product>{
+        val ids = productRepository.getCartIds(currentUser.id!!)
+        val product = productRepository.findById(id).orElseThrow { DataNotFoundException("product","id",id.toString()) }
+        return productRepository.findAllByStatusExceptAndCategories(product.categories!!.first()!!.id!!,ids,of)
+    }
+
+    fun loadRelativeProduct(currentUser: User, of: Pageable):Page<Product>{
+        val ids = productRepository.getCartIds(currentUser.id!!)
+        return productRepository.findAllByStatusExcept(currentUser.id,ids,of)
     }
 
     override fun addProduct(productForm: ProductForm, user: User): Product {
@@ -73,4 +84,8 @@ class ProductService(
             productRepository.findById(id).orElseThrow { throw DataNotFoundException("product", "id", id.toString()) }
         productRepository.delete(oldProduct)
     }
+
+//    fun findAll(exp: BooleanExpression): Iterable<Product?>? {
+//        return productRepository.findAll(exp)
+//    }
 }

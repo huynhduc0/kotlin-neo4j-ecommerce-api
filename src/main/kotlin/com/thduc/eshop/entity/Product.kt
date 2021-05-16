@@ -22,6 +22,8 @@ data class Product(
     @OneToOne var user: User ?= null,
     @OneToMany(cascade = [CascadeType.ALL],fetch = FetchType.EAGER)
     var productProperties: Set<ProductProperty>? = null,
+    var totalRating:Int?=0,
+    var rating: Double =0.0,
 ) {
     constructor(): this(null,null,null,null,null,null,null,null,null,null,null)
 }

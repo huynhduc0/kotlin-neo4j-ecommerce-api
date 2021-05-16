@@ -1,5 +1,5 @@
 package com.thduc.eshop.constant
 
 enum class UploadType {
-    AVATAR,CATEGORY,PRODUCT
+    AVATAR,CATEGORY,PRODUCT,RATING
 }
