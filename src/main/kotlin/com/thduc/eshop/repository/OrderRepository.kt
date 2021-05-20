@@ -11,4 +11,5 @@ import org.springframework.stereotype.Repository
 @Repository
 interface OrderRepository: PagingAndSortingRepository<Orders, Long> {
     fun findAllByShop_User(user:User,pageable: Pageable):Page<Orders>
+    fun findAllByUser(user:User,pageable: Pageable):Page<Orders>
 }

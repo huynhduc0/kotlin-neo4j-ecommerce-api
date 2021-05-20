@@ -23,6 +23,9 @@ class OrderService(
     fun getMerchantOder(user: User, of: PageRequest):Page<Orders>{
         return orderRepository.findAllByShop_User(user,of)
     }
+    fun getUserOder(user: User, of: PageRequest):Page<Orders>{
+        return orderRepository.findAllByUser(user,of)
+    }
     fun createOrder(user: User, orderForm: OrderForm): Orders {
         orderForm.orderDetails!!.forEach {
 //            logger.info(it.toString())
