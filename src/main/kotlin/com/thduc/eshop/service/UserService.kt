@@ -137,6 +137,7 @@ class UserService(
                     fullname = "$familyName $givenName",
                     phoneNumber = userForm.phoneNumber,
                     socialId = userId,
+                    email = email
 
                 )
                 user.roles = if (userForm.isShop!!) setOf(roleService.findRoleByRoleName("MERCHANT")) else
