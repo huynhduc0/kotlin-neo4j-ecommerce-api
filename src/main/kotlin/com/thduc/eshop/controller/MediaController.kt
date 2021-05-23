@@ -3,6 +3,7 @@ package com.thduc.eshop.controller
 import com.thduc.eshop.annotation.ActiveUser
 import com.thduc.eshop.entity.Media
 import com.thduc.eshop.request.MediaForm
+import com.thduc.eshop.request.SuccessActionResponse
 import com.thduc.eshop.request.UserPrincipal
 import com.thduc.eshop.service.MediaService
 import com.thduc.eshop.utilities.FileUtil
@@ -52,7 +53,7 @@ class MediaController(
     fun addMedia(
         @ActiveUser userPrincipal: UserPrincipal,
         mediaForm: MediaForm
-    ):Media{
-        return mediaService.addMedia(mediaForm,userPrincipal.currentUser!! )
+    ):SuccessActionResponse{
+        return SuccessActionResponse("add media",mediaService.addMedia(mediaForm,userPrincipal.currentUser!! ))
     }
 }

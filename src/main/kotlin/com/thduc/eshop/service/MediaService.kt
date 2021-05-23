@@ -21,7 +21,10 @@ class MediaService(
         return mediaRepository.findByCreatedBy(user,pageable)
     }
 
-    override fun addMedia(mediaForm: MediaForm, currentUser: User): Media {
-        return mediaRepository.save(fileUtil.store(currentUser.username!!,currentUser,mediaForm.media,UploadType.PRODUCT))
+    override fun addMedia(mediaForm: MediaForm, currentUser: User): Boolean {
+        mediaForm.medias.forEach {
+            mediaRepository.save(fileUtil.store(currentUser.username!!,currentUser,it,UploadType.PRODUCT))
+        }
+        return true;
     }
 }

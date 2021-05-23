@@ -7,5 +7,5 @@ import org.springframework.stereotype.Service
 
 @Service
 interface MediaServiceImpl {
-    abstract fun addMedia(mediaForm: MediaForm, currentUser: User): Media
+    abstract fun addMedia(mediaForm: MediaForm, currentUser: User): Boolean
 }

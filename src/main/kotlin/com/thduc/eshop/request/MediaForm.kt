@@ -3,6 +3,6 @@ package com.thduc.eshop.request
 import org.springframework.web.multipart.MultipartFile
 
 class MediaForm(
-    var media: MultipartFile,
+    var medias: Set<MultipartFile>,
 ) {
 }
