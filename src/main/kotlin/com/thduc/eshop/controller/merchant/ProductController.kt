@@ -35,10 +35,10 @@ class ProductController(
     fun addProduct(@RequestBody productForm: ProductForm,@ActiveUser userPrincipal: UserPrincipal): Product{
         return productService.addProduct(productForm,userPrincipal.currentUser!!)
     }
-//    @PutMapping
-//    fun getMyProduct(@ActiveUser userPrincipal: UserPrincipal): Page<Product>{
-//        return productService.loadProductByUser()
-//    }
+    @PutMapping("{id}")
+    fun getMyProduct(@ActiveUser userPrincipal: UserPrincipal,@RequestBody productForm: ProductForm,@PathVariable id:Long): Product{
+        return productService.edit(id,productForm,userPrincipal.currentUser!!)
+    }
 //    @DeleteMapping
 //    fun getMyProduct(@ActiveUser userPrincipal: UserPrincipal): Page<Product>{
 //        return productService.loadProductByUser()
