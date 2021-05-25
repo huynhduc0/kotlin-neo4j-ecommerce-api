@@ -64,5 +64,9 @@ class UserController(@Autowired val userService: UserService,
         else  shopService.getAllShop(userPrincipal.currentUser!!,  PageRequest.of(page, size, Sort.by(sortBy).descending()))
 
     }
+    @GetMapping("me")
+    fun me(@ActiveUser userPrincipal: UserPrincipal):User{
+        return userPrincipal.currentUser!!
+    }
 
 }

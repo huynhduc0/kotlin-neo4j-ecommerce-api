@@ -1,10 +1,7 @@
 package com.thduc.eshop.service
 
 import com.thduc.eshop.constant.StatusType
-import com.thduc.eshop.entity.Product
-import com.thduc.eshop.entity.ProductOption
-import com.thduc.eshop.entity.Shop
-import com.thduc.eshop.entity.User
+import com.thduc.eshop.entity.*
 import com.thduc.eshop.exception.BadRequestException
 import com.thduc.eshop.exception.DataNotFoundException
 import com.thduc.eshop.repository.ProductOptionRepository
@@ -66,18 +63,28 @@ class ProductService(
         var oldProduct =
             productRepository.findById(id).orElseThrow { throw DataNotFoundException("product", "id", id.toString()) }
 
+//        var pr: Set<ProductProperty> = setOf()
         productForm.properties!!.map {
-            prop ->
+            prop:ProductProperty ->
                 prop.options!!.map {
-                    var old = productOptionRepository.findById(it.id!!).orElseGet {
-                        productOptionRepository.save(it)
+
+                    if(it.id!! == null){
+                        var op = productOptionRepository.save(it)
+                        it.id = op.id
                     }
+                    var old = productOptionRepository.findById(it.id!!).orElseThrow { DataNotFoundException("option","option","option") }
                     if(old != null) {
                         it.id = old.id
-                        productOptionRepository.save(it)
+                        var op =productOptionRepository.save(it)
+                        it.name = op.name
+                        it.subPrice = op.subPrice
+                        it.subQuantity = op.subQuantity
+                        it.id = op.id
                     }
                 }
+            prop.options = prop.options
         }
+//        productForm.properties.
 
         oldProduct.productProperties =
             if (productForm.properties != null) productForm.properties else oldProduct.productProperties
