@@ -16,21 +16,23 @@ class DeviceService(
     fun refreshToken(pushToken: String?, osType: OSType?, deviceId: String?,user: User): Device? {
         if(pushToken == null || deviceId == null || osType == null) return null
         if(deviceRepository.existsByDeviceIdAndPushTokenAndUser(deviceId!!,pushToken!!,user)) return null
-        val oldToken: Device = deviceRepository.findTopByDeviceId(deviceId!!)
+        val oldToken: Device? = deviceRepository.findTopByDeviceId(deviceId!!)
         return if (oldToken != null) {
             oldToken.pushToken = pushToken
             oldToken.user = user
             deviceRepository.save<Device>(oldToken)
-            return null
+            null
         } else {
-            Device(pushToken = pushToken, os = osType, deviceId = deviceId,user = user)
+            deviceRepository.save(
+                Device(pushToken = pushToken, os = osType, deviceId = deviceId,user = user))
+
         }
     }
 
     fun deleteAllToken(deviceId: String) {
         deviceRepository.deleteAllByDeviceId(deviceId)
     }
-    fun getAllDevice(user:User):Set<Device>{
+    fun getAllDevice(user:User):Set<Device>?{
         return deviceRepository.findAllByUser(user)
     }
 }

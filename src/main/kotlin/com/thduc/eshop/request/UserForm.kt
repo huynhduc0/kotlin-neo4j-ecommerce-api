@@ -17,6 +17,5 @@ class UserForm(
     var email:String? = null,
     var deviceId:String? = null,
     var pushToken:String? = null,
-    var osType: OSType,
 ) {
 }

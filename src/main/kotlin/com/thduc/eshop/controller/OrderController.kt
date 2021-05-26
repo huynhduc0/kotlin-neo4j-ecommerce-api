@@ -1,6 +1,7 @@
 package com.thduc.eshop.controller
 
 import com.thduc.eshop.annotation.ActiveUser
+import com.thduc.eshop.annotation.LogExecution
 import com.thduc.eshop.entity.Orders
 import com.thduc.eshop.request.OrderForm
 import com.thduc.eshop.request.UserPrincipal
@@ -19,6 +20,7 @@ class OrderController(
 ) {
     @PostMapping
     @Transactional
+    @LogExecution
     fun createOrder(@RequestBody orderForm: OrderForm ,@ActiveUser userPrincipal: UserPrincipal): Orders {
         return orderService.createOrder(userPrincipal.currentUser!!,orderForm)
     }

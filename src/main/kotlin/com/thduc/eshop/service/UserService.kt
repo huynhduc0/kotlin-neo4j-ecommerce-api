@@ -72,7 +72,7 @@ class UserService(
             throw BadRequestException("Wrong username or password")
         val token = generateToken(userForm.username!!)
 
-        deviceService.refreshToken(userForm.pushToken!!,userForm.osType,userForm.deviceId!!,user)
+        deviceService.refreshToken(userForm.pushToken,userForm.platform,userForm.deviceId,user)
         return if (token.isNullOrEmpty()) throw DataNotFoundException("user", "user", "username") else UserResponse(
             token,
             user
@@ -109,6 +109,7 @@ class UserService(
             var user: User? = userRepository.findTopBySocialId(userId)
             if (user != null) {
                 val token = generateToken(user.username!!)
+                deviceService.refreshToken(userForm.pushToken,userForm.platform,userForm.deviceId,user)
                 return if (token.isNullOrEmpty()) throw DataNotFoundException(
                     "user",
                     "user",
@@ -138,6 +139,7 @@ class UserService(
                 user.avatar= pictureUrl
                 val newUser: User = userRepository.save(user)
                 val token = generateToken(user.username!!)
+                deviceService.refreshToken(userForm.pushToken,userForm.platform,userForm.deviceId,user)
                 return if (token.isNullOrEmpty()) throw DataNotFoundException(
                     "user",
                     "user",

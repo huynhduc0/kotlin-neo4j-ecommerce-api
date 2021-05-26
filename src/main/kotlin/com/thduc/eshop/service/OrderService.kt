@@ -1,5 +1,6 @@
 package com.thduc.eshop.service
 
+import com.thduc.eshop.constant.NotificationType
 import com.thduc.eshop.entity.*
 import com.thduc.eshop.exception.BadRequestException
 import com.thduc.eshop.exception.DataNotFoundException
@@ -18,6 +19,7 @@ class OrderService(
     @Autowired val orderRepository: OrderRepository,
     @Autowired val productRepository: ProductRepository,
     @Autowired val productOptionRepository: ProductOptionRepository,
+    @Autowired val notificationService: NotificationService
 //    val logger: org.slf4j.Logger = LoggerFactory.getLogger(OrderService::class.java)
 ) : OrderServiceImpl {
     fun getMerchantOder(user: User, of: PageRequest):Page<Orders>{
@@ -40,7 +42,10 @@ class OrderService(
             val productOption = productOptionRepository.findById(orderDetail!!.productOption!!.id!!).orElseThrow { BadRequestException("This product option is no logger support") }
             subProduct(orderDetail.product!!,orderDetail.productProperty,productOption,orderDetail.quantity!!)
         }
-        return orderRepository.save(orders)
+        val order = orderRepository.save(orders)
+        val product = orderForm.orderDetails!!.first().product!!.id?.let { productRepository.findById(it).orElseThrow { DataNotFoundException("<","<","<") } }
+        notificationService.addNotification(user,"od","Order successful",NotificationType.ORDER,order.id!!, product!!.medias!!.first().mediaPath)
+        return order
     }
 
     fun subProduct(
@@ -73,6 +78,8 @@ class OrderService(
     override fun changeStatus(currentUser: User, id: Long, orders: Orders): Orders {
         var oldOrder = orderRepository.findById(id).orElseThrow { DataNotFoundException("order","id",id.toString()) }
         oldOrder.status = orders.status
-        return orderRepository.save(oldOrder)
+        val order =  orderRepository.save(oldOrder)
+        notificationService.addNotification(currentUser,"od","Order successful",NotificationType.ORDER,order.id!!, order.orderDetails!!.first().product!!.medias!!.first().mediaPath)
+        return order
     }
 }

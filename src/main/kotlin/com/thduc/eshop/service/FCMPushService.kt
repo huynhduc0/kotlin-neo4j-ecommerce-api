@@ -25,7 +25,7 @@ class FCMPushService(
 
 ) {
     //    @Value("${app.firebase-config}")
-    val firebaseConfig:String = "hihi-1541495393612-firebase-adminsdk-nb3b4-0f3ff37c00.json"
+    val firebaseConfig:String = "hihi-1541495393612-firebase-adminsdk-nb3b4-36a3f095de.json"
     var firebaseApp: FirebaseApp? = null
     var log: org.slf4j.Logger? = LoggerFactory.getLogger(FCMPushService::class.java)
     @PostConstruct
@@ -62,7 +62,7 @@ class FCMPushService(
     //    }
     fun sendPnsToDevice(notifications: AppNotification): Boolean {
         val devices = deviceRepository.findAllByUser(notifications.toUser!!)
-        devices.forEach { tokens ->
+        devices!!.forEach { tokens ->
             val message: Message? = Message.builder()
                 .setToken(tokens.pushToken)
 //                .setNotification(
