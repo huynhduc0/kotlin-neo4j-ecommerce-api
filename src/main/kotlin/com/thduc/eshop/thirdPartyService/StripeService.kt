@@ -1,4 +1,4 @@
-package com.thduc.eshop.threePartyService
+package com.thduc.eshop.thirdPartyService
 
 import com.stripe.Stripe
 import com.stripe.exception.AuthenticationException
@@ -6,7 +6,6 @@ import com.stripe.exception.CardException
 import com.stripe.exception.InvalidRequestException
 import com.stripe.model.Charge
 import com.thduc.eshop.request.ChargeRequest
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.util.HashMap

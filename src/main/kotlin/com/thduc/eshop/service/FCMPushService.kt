@@ -9,6 +9,9 @@ import org.springframework.core.io.ClassPathResource
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
+import com.google.firebase.messaging.Notification
+import com.thduc.eshop.constant.UploadConstant
+import com.thduc.eshop.constant.UploadConstant.SERVER_PATH
 import com.thduc.eshop.entity.AppNotification
 import com.thduc.eshop.repository.DeviceRepository
 import org.slf4j.LoggerFactory
@@ -65,10 +68,13 @@ class FCMPushService(
         devices!!.forEach { tokens ->
             val message: Message? = Message.builder()
                 .setToken(tokens.pushToken)
-//                .setNotification(
-//                    Notification.builder()
-                .putData("notification_type",notifications.title)
-                .putData("destinationId", notifications.message)
+                .setNotification(
+                    Notification.builder().
+                    setImage(SERVER_PATH+notifications.image).setBody(notifications.message).setTitle(notifications.title)
+                        .build()
+                )
+                .putData("notification_type",notifications.notificationType.toString())
+                .putData("destinationId", notifications.destinationId.toString())
                 .build()
             var response: String? = null
             try {

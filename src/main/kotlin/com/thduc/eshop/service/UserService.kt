@@ -6,6 +6,7 @@ import com.google.api.client.http.javanet.NetHttpTransport
 import com.google.api.client.json.gson.GsonFactory
 import com.thduc.eshop.annotation.LogExecution
 import com.thduc.eshop.config.SecurityProperty
+import com.thduc.eshop.constant.NotificationType
 import com.thduc.eshop.constant.OSType
 import com.thduc.eshop.constant.UploadType
 import com.thduc.eshop.entity.User
@@ -36,6 +37,7 @@ class UserService(
     @Autowired val appUserDetailsService: AppUserDetailsService,
     @Autowired val securityProperty: SecurityProperty,
     @Autowired val deviceService: DeviceService,
+    @Autowired val notificationService: NotificationService,
     val fileUtil: FileUtil,
     val roleService: RoleService
 ) : UserServiceImpl {
@@ -51,7 +53,12 @@ class UserService(
             setOf(roleService.findRoleByRoleName("USER"))
         user.avatar = fileUtil.store(user.username!!, user, userForm.avatar, UploadType.AVATAR).mediaPath
         user.password = if (userForm.password == null) null else passwordEncoder.encode(userForm.password)
-        return userRepository.save(user)
+        val nUser = userRepository.save(user)
+        notificationService.addNotification(
+            user, "Welcome to our app ${user.fullname}", "Welcome to our app",
+            NotificationType.WELCOME, 0, null
+        )
+        return nUser
     }
 
     fun findByUsername(username: String): User? {
@@ -72,7 +79,11 @@ class UserService(
             throw BadRequestException("Wrong username or password")
         val token = generateToken(userForm.username!!)
 
-        deviceService.refreshToken(userForm.pushToken,userForm.platform,userForm.deviceId,user)
+        deviceService.refreshToken(userForm.pushToken, userForm.platform, userForm.deviceId, user)
+        notificationService.addNotification(
+            user, "Welcome to our app ${user.fullname}", "Welcome to our app",
+            NotificationType.WELCOME, 0, null
+        )
         return if (token.isNullOrEmpty()) throw DataNotFoundException("user", "user", "username") else UserResponse(
             token,
             user
@@ -109,7 +120,7 @@ class UserService(
             var user: User? = userRepository.findTopBySocialId(userId)
             if (user != null) {
                 val token = generateToken(user.username!!)
-                deviceService.refreshToken(userForm.pushToken,userForm.platform,userForm.deviceId,user)
+                deviceService.refreshToken(userForm.pushToken, userForm.platform, userForm.deviceId, user)
                 return if (token.isNullOrEmpty()) throw DataNotFoundException(
                     "user",
                     "user",
@@ -136,10 +147,14 @@ class UserService(
                 )
                 user.roles = if (userForm.isShop!!) setOf(roleService.findRoleByRoleName("MERCHANT")) else
                     setOf(roleService.findRoleByRoleName("USER"))
-                user.avatar= pictureUrl
+                user.avatar = pictureUrl
                 val newUser: User = userRepository.save(user)
                 val token = generateToken(user.username!!)
-                deviceService.refreshToken(userForm.pushToken,userForm.platform,userForm.deviceId,user)
+                deviceService.refreshToken(userForm.pushToken, userForm.platform, userForm.deviceId, user)
+                notificationService.addNotification(
+                    newUser, "Welcome to our app ${user.fullname}", "Welcome to our app",
+                    NotificationType.WELCOME, 0, null
+                )
                 return if (token.isNullOrEmpty()) throw DataNotFoundException(
                     "user",
                     "user",
@@ -148,7 +163,6 @@ class UserService(
                     token,
                     newUser
                 )
-
             }
         } else {
             throw BadRequestException("OAuth token is invalid")
@@ -166,7 +180,7 @@ class UserService(
     }
 
     override fun getAllUser(currentUser: User, of: PageRequest): Page<User> {
-        return userRepository.findAllByIdNot(currentUser.id!!,of)
+        return userRepository.findAllByIdNot(currentUser.id!!, of)
     }
 
 }

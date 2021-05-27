@@ -44,7 +44,7 @@ class OrderService(
         }
         val order = orderRepository.save(orders)
         val product = orderForm.orderDetails!!.first().product!!.id?.let { productRepository.findById(it).orElseThrow { DataNotFoundException("<","<","<") } }
-        notificationService.addNotification(user,"od","Order successful",NotificationType.ORDER,order.id!!, product!!.medias!!.first().mediaPath)
+        notificationService.addNotification(user,"Your order is ready right now, thank for choosing our service","Order successful",NotificationType.ORDER,order.id!!, product!!.medias!!.first().mediaPath)
         return order
     }
 
@@ -79,7 +79,7 @@ class OrderService(
         var oldOrder = orderRepository.findById(id).orElseThrow { DataNotFoundException("order","id",id.toString()) }
         oldOrder.status = orders.status
         val order =  orderRepository.save(oldOrder)
-        notificationService.addNotification(currentUser,"od","Order successful",NotificationType.ORDER,order.id!!, order.orderDetails!!.first().product!!.medias!!.first().mediaPath)
+        notificationService.addNotification(order.user,"Your order now is ${order.status}, check it now!","Your order has been ${order.status}",NotificationType.ORDER,order.id!!, order.orderDetails!!.first().product!!.medias!!.first().mediaPath)
         return order
     }
 }

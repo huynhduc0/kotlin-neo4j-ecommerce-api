@@ -21,7 +21,7 @@ class NotificationService(
                 destinationId: Long,
                 image: String?,
         ): AppNotification? {
-                val notification = AppNotification(title = title,notificationType = notificationType,image = image,message = message,toUser = to )
+                val notification = AppNotification(title = title,notificationType = notificationType,image = image,message = message,destinationId = destinationId,toUser = to )
                 val notifications: AppNotification = notificationRepository.save(notification)
                 fcmPushService.sendPnsToDevice(notifications)
                 return notifications
