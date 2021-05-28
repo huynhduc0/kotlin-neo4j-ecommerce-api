@@ -39,6 +39,7 @@ class UserController(@Autowired val userService: UserService,
     }
     @PostMapping("google")
     @Transactional
+    @LogExecution
     fun googleLogin(userForm: UserForm):UserResponse?{
         return userService.googleLogin(userForm)
     }
