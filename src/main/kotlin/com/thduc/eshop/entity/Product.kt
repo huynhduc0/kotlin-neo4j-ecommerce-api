@@ -1,6 +1,9 @@
 package com.thduc.eshop.entity
 
 import com.thduc.eshop.constant.StatusType
+import org.hibernate.annotations.CreationTimestamp
+import org.hibernate.annotations.UpdateTimestamp
+import java.time.LocalDateTime
 
 import javax.persistence.*
 
@@ -24,6 +27,8 @@ data class Product(
     var productProperties: Set<ProductProperty>? = null,
     var totalRating:Int?=0,
     var rating: Double =0.0,
+    @CreationTimestamp var created: LocalDateTime? = null,
+    @UpdateTimestamp var updated: LocalDateTime? = null
 ) {
     constructor(): this(null,null,null,null,null,null,null,null,null,null,null)
 }
