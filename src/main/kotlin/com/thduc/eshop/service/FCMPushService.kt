@@ -28,7 +28,7 @@ class FCMPushService(
 
 ) {
     //    @Value("${app.firebase-config}")
-    val firebaseConfig:String = "hihi-1541495393612-firebase-adminsdk-nb3b4-36a3f095de.json"
+    val firebaseConfig:String = "techshop-e780f-firebase-adminsdk-1hquf-3f491e4e4a.json"
     var firebaseApp: FirebaseApp? = null
     var log: org.slf4j.Logger? = LoggerFactory.getLogger(FCMPushService::class.java)
     @PostConstruct
