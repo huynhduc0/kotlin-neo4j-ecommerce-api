@@ -14,8 +14,14 @@ interface RecommendRepository:JpaRepository<Recommend,Long> {
     fun getAllIds(@Param("from_id") from_id: Long?): List<Long?>?
 
     @Query(
-        value = """SELECT distinct cart.user_id as uid, product_id as pid, rating*total_rating as num
-        FROM cart JOIN product on product.id = cart.product_id""", nativeQuery = true
+        value = "SELECT DISTINCT\n" +
+                "\tcart.user_id AS uid,\n" +
+                "\tcart.product_id AS pid,\n" +
+                "\tIFNULL(rating * total_rating+ total_rating + IFNULL(t.times,0),0) AS num \n" +
+                "FROM\n" +
+                "\tcart\n" +
+                "\tLEFT JOIN ( SELECT count(*) AS times,product_id FROM order_detail GROUP BY order_detail.product_id ) AS t on cart.product_id = t.product_id\n" +
+                "\tJOIN product ON product.id = cart.product_id", nativeQuery = true
     )
     fun getAllLikeAno(): List<LikeUid?>?
     interface LikeUid {
