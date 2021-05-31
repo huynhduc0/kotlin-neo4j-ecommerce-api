@@ -31,7 +31,7 @@ class NotificationController(
             )
         else notificationService.getByUser(userPrincipal.getUser()!!, PageRequest.of(page, size, Sort.by(sortBy)))
     }
-    @GetMapping("/id")
+    @GetMapping("{id}")
     fun seen(@PathVariable id:Long){
         return notificationService.seen(id);
     }
