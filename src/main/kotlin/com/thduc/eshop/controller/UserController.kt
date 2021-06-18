@@ -73,7 +73,7 @@ class UserController(@Autowired val userService: UserService,
         return userPrincipal.currentUser!!
     }
     @GetMapping("categories")
-    fun getAllACtivateCategories():Set<Category>{
+    fun getAllActivateCategories():Set<Category>{
         return categoryService.allActive()
     }
 

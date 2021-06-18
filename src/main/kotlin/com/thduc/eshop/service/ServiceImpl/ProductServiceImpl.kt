@@ -13,8 +13,8 @@ interface ProductServiceImpl {
     fun deleteProduct(id: Long)
     fun loadUserProduct(user: User, pageable: Pageable): Page<Product>
     fun loadRecomendProduct(user: User, pageable: Pageable): Page<Product>
-    abstract fun loadProductByUser(user: User, pageable: Pageable, categoryId: String, search: String): Page<Product>
-    abstract fun loadProductByUser(currentUser: User, pageable: Pageable, search: String): Page<Product>
+    abstract fun loadProductByUser(user: User, pageable: Pageable, categoryId: String, search: String, shopId:String): Page<Product>
+    abstract fun loadProductByUser(currentUser: User, pageable: Pageable, search: String,shopId:String): Page<Product>
 
 
 }

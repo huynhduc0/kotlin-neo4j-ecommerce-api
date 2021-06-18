@@ -7,13 +7,9 @@ import com.thduc.eshop.service.ProductService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
-import com.thduc.eshop.utilities.SearchBuilder
 import org.springframework.data.domain.Pageable
+import org.springframework.data.domain.Sort
 import org.springframework.web.bind.annotation.*
-
-import java.util.regex.Matcher
-import java.util.regex.Pattern
 
 
 @RestController
@@ -28,15 +24,15 @@ class UserProductController(
                      @RequestParam(value = "sortBy", defaultValue = "id")  sortBy: String,
                      @RequestParam(value = "sortOrder", defaultValue = "")  sortOrder: String,
                      @RequestParam(value = "search", defaultValue = "")  search: String,
-                     @RequestParam(value = "category",defaultValue = "") categoryId:String
+                     @RequestParam(value = "category",defaultValue = "") categoryId:String,
+                     @RequestParam(value = "shopId",defaultValue = "") shopId:String
     ): Page<Product> {
-
         val pageRequest:Pageable = if (sortOrder == "desc")
             PageRequest.of(page, size, Sort.by(sortBy).descending())
         else PageRequest.of(page, size, Sort.by(sortBy))
         return if(categoryId!= "")
-            productService.loadProductByUser(userPrincipal.currentUser!!,pageRequest,categoryId,search)
-        else productService.loadProductByUser(userPrincipal.currentUser!!,pageRequest,search)
+            productService.loadProductByUser(userPrincipal.currentUser!!,pageRequest,categoryId,search,shopId)
+        else productService.loadProductByUser(userPrincipal.currentUser!!,pageRequest,search,shopId)
 
     }
     @GetMapping("cart-relative")
