@@ -1,5 +1,6 @@
 package com.thduc.eshop.service
 
+import com.thduc.eshop.constant.StatusType
 import com.thduc.eshop.entity.Banner
 import com.thduc.eshop.entity.Shop
 import com.thduc.eshop.entity.User
@@ -18,6 +19,9 @@ class BannerService(
 ):BannerAddServiceImpl{
     fun getAllBanner():Set<Banner>{
         return bannerRepository.findAll().toSet()
+    }
+    fun getAllActivateBanner():Set<Banner>{
+        return bannerRepository.findAllByStatus(StatusType.ACTIVATE)
     }
     fun saveBanner( banner: Banner): Banner {
         return bannerRepository.save(banner)

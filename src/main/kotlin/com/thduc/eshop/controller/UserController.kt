@@ -2,12 +2,14 @@ package com.thduc.eshop.controller
 
 import com.thduc.eshop.annotation.ActiveUser
 import com.thduc.eshop.annotation.LogExecution
+import com.thduc.eshop.entity.Banner
 import com.thduc.eshop.entity.Category
 import com.thduc.eshop.entity.Shop
 import com.thduc.eshop.entity.User
 import com.thduc.eshop.request.UserForm
 import com.thduc.eshop.request.UserPrincipal
 import com.thduc.eshop.request.UserResponse
+import com.thduc.eshop.service.BannerService
 import com.thduc.eshop.service.CategoryService
 import com.thduc.eshop.service.ShopService
 import com.thduc.eshop.service.UserService
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*
 
 class UserController(@Autowired val userService: UserService,
                      @Autowired val categoryService: CategoryService,
+                     @Autowired val bannerService: BannerService,
                      @Autowired val shopService: ShopService) {
     @PostMapping("register")
     @Transactional
@@ -75,6 +78,10 @@ class UserController(@Autowired val userService: UserService,
     @GetMapping("categories")
     fun getAllActivateCategories():Set<Category>{
         return categoryService.allActive()
+    }
+    @GetMapping("banners")
+    fun getAllActivateBanners():Set<Banner>{
+        return bannerService.getAllActivateBanner()
     }
 
 }
