@@ -28,7 +28,7 @@ class OrderService(
     }
     fun getUserOder(user: User,statusType: StatusType?, of: PageRequest):Page<Orders>{
         return if (statusType == null) orderRepository.findAllByUser(user,of)
-        else orderRepository.findAllByUserAndStatus(user, statusType!!, of)
+        else orderRepository.findAllByUserAndStatus(user, statusType, of)
     }
     fun createOrder(user: User, orderForm: OrderForm): Orders {
         orderForm.orderDetails!!.forEach {
@@ -63,7 +63,7 @@ class OrderService(
             product.stock!!.minus(quantity)
             productRepository.save(product)
         }
-        if (productOption!!.id == productOption!!.id && productProperty!!.id == productProperty!!.id && productOption.subQuantity!! >= quantity) {
+        if (productOption!!.id == productOption.id && productProperty!!.id == productProperty.id && productOption.subQuantity!! >= quantity) {
             var productOption1 = productOption.id?.let {
                 productOptionRepository.findById(it)
                     .orElseThrow { DataNotFoundException("option", "name", productOption.name) }
@@ -78,7 +78,7 @@ class OrderService(
     }
 
     override fun changeStatus(currentUser: User, id: Long, orders: Orders): Orders {
-        var oldOrder = orderRepository.findById(id).orElseThrow { DataNotFoundException("order","id",id.toString()) }
+        val oldOrder = orderRepository.findById(id).orElseThrow { DataNotFoundException("order","id",id.toString()) }
         oldOrder.status = orders.status
         val order =  orderRepository.save(oldOrder)
         notificationService.addNotification(order.user,"Your order now is ${order.status}, check it now!","Your order has been ${order.status}",NotificationType.ORDER,order.id!!, order.orderDetails!!.first().product!!.medias!!.first().mediaPath)
