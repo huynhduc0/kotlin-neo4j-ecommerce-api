@@ -51,4 +51,26 @@ class RatingService(
         return ratingRepository.findAllByProduct_User(currentUser,of)
     }
 
+    override fun loadAll(): List<Rating> {
+        return ratingRepository.findAll().toList()
+    }
+
+    override fun changeSys(id: Long, point: Int): Boolean {
+        var rating = ratingRepository.findById(id).orElseThrow { DataNotFoundException("rating","id",id.toString()) }
+        rating.systemRating = point
+        ratingRepository.save(rating)
+        return true
+    }
+
+    fun productSummary(): Boolean {
+        val products = productRepository.findAll()
+        products.forEach {
+            val ratingList = this.ratingRepository.findAllByProduct(it)
+            var sum = 0;
+            ratingList.forEach { rating -> sum+= (if (rating.systemRating != -1)  rating.systemRating else 0)!! }
+            it.sysRating = if (ratingList.isNotEmpty())  (sum / ratingList.size).toDouble() else 0.0
+            productRepository.save(it)
+        }
+        return true
+    }
 }

@@ -10,6 +10,8 @@ interface RatingServiceImpl {
     abstract fun addRating(currentUser: User?, ratingForm: RatingForm): Boolean
     abstract fun getProdRating(currentUser: User, of: PageRequest,productId:Long): Page<Rating>
     abstract fun getAllShopRating(currentUser: User, of: PageRequest): Page<Rating>
+    fun loadAll(): List<Rating>
+    fun changeSys(id:Long, point:Int): Boolean
 
 
 }

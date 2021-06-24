@@ -27,6 +27,7 @@ data class Product(
     var productProperties: Set<ProductProperty>? = null,
     var totalRating:Int?=0,
     var rating: Double =0.0,
+    var sysRating: Double =0.0,
     @CreationTimestamp var created: LocalDateTime? = null,
     @UpdateTimestamp var updated: LocalDateTime? = null
 ) {

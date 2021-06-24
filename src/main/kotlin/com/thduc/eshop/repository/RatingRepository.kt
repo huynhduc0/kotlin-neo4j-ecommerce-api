@@ -9,5 +9,6 @@ import org.springframework.data.repository.PagingAndSortingRepository
 
 interface RatingRepository:PagingAndSortingRepository<Rating,Long> {
     fun findAllByProduct(product: Product,pageable: Pageable):Page<Rating>
+    fun findAllByProduct(product: Product):List<Rating>
     fun findAllByProduct_User(user:User,pageable: Pageable):Page<Rating>
 }

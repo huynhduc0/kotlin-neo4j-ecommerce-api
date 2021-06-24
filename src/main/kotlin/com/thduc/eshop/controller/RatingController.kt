@@ -59,4 +59,19 @@ class RatingController(
             )
         else ratingService.getAllShopRating(userPrincipal.currentUser!!, PageRequest.of(page, size, Sort.by(sortBy)))
     }
+    @GetMapping("execute")
+    @LogExecution
+    fun loadAllRating(): List<Rating>{
+        return ratingService.loadAll()
+    }
+    @GetMapping("setSys/{id}/{point}")
+    @LogExecution
+    fun set(@PathVariable id:Long, @PathVariable point:Int):Boolean{
+        return ratingService.changeSys(id,point)
+    }
+    @GetMapping("summary")
+    @LogExecution
+    fun summary():Boolean{
+        return ratingService.productSummary()
+    }
 }
