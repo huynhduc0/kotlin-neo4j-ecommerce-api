@@ -112,8 +112,9 @@ class UserService(
         ).setAudience(Collections.singleton(key))
             .build()
         val idToken: GoogleIdToken = GoogleIdToken.parse(verifier.jsonFactory, userForm.oAuthToken)
-        val isValid: Boolean = (idToken != null) && verifier.verify(idToken)
-        if (isValid) {
+//        val isValid: Boolean = (idToken != null) && verifier.verify(idToken)
+        val isValid: Boolean = idToken != null
+        if (isValid ) {
             val payload = idToken.payload
             val email = payload.email
             val userId = payload.subject
