@@ -47,6 +47,7 @@ class UserProductController(
             productService.loadRelativeProduct(userPrincipal.currentUser!!, PageRequest.of(page, size, Sort.by(sortBy).descending()))
         else productService.loadRelativeProduct(userPrincipal.getUser()!!, PageRequest.of(page, size, Sort.by(sortBy)))
     }
+
     @GetMapping("product-relative/{id}")
     fun getProductRelative(@ActiveUser userPrincipal: UserPrincipal,
                            @PathVariable id:Long,
@@ -58,6 +59,12 @@ class UserProductController(
         return if (sortOrder == "desc")
             productService.loadRelativeProduct(id,userPrincipal.currentUser!!, PageRequest.of(page, size, Sort.by(sortBy).descending()))
         else productService.loadRelativeProduct(id,userPrincipal.getUser()!!, PageRequest.of(page, size, Sort.by(sortBy)))
+    }
+
+    @GetMapping("{id}")
+    fun getProd(@PathVariable id:Long
+    ): Product {
+        return productService.loadById(id)
     }
 
     @GetMapping("recommend")

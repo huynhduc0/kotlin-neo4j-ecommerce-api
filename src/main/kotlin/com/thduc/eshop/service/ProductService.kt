@@ -127,6 +127,9 @@ class ProductService(
             productRepository.findById(id).orElseThrow { throw DataNotFoundException("product", "id", id.toString()) }
         productRepository.delete(oldProduct)
     }
+    fun loadById(id: Long):Product{
+        return productRepository.findById(id).orElseThrow { DataNotFoundException("prod","id",id.toString()) }
+    }
 
 //    fun findAll(exp: BooleanExpression): Iterable<Product?>? {
 //        return productRepository.findAll(exp)
